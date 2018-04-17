@@ -2,7 +2,7 @@ var mongoose = require( 'mongoose' );
 var gracefulShutdown;
 var dbURI = 'TODO';
 if(process.env.NODE_ENV==='production'){
-  dbURI = 'TODO';
+  dbURI = 'mongodb://admin:admin@ds247619.mlab.com:47619/bookbarter';
 }
 mongoose.connect(dbURI);
 
@@ -43,4 +43,4 @@ mongoose.connection.on('disconnected', function() {
   console.log('Mongoose disconnected');
 });
 
-require('.listings');
+require('./listings');
