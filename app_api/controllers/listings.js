@@ -5,8 +5,8 @@ var Course = mongoose.model('Listing');
 module.exports.allListings = function(req,res) {
   Listing
     .find()
-    .exec(function(err, courses) {
-        if (!listings) {
+    .exec(function(err, listing) {
+        if (!listing) {
           sendJsonResponse(res, 404, {
             "message": "listingid not found"
           });
