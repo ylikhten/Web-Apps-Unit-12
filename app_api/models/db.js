@@ -42,4 +42,5 @@ mongoose.connection.on('disconnected', function() {
   console.log('Mongoose disconnected');
 });
 
-require('./listings.js');
+require('./listings');
+require('./users');

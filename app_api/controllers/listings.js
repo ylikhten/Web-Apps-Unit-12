@@ -1,12 +1,11 @@
 var mongoose = require('mongoose');
-var Listing = mongoose.model('listing');
+var Listing = mongoose.model('Listing');
 
 //Get ALL Listings
 module.exports.allListings = function(req,res) {
   Listing
     .find()
     .exec(function(err, listing){
-        console.log(listing);
         if (err) {
           sendJsonResponse(res, 404, err);
           return;
@@ -40,21 +39,18 @@ module.exports.singleListing = function(req,res) {
 };
 
 module.exports.addListing = function(req, res){
-  Listing.find().exec(function(err, listing){
-    console.log(listing);
-    listing.push({
-      title: req.body.title,
-      subject: req.body.subject,
-      description: req.body.description,
-      trades: req.body.trades
-    });
-    Listing.save(function(err, listing){
-      if(err){
-        sendJsonResponse(res, 400, err);
-      }else{
-        sendJsonResponse(res, 201, listing);
-      }
-    });
+  var newListing = new Listing({
+    title: req.body.title,
+    subject: req.body.subject,
+    description: req.body.description,
+    trades: req.body.trades
+  });
+  newListing.save(function(err, listing){
+    if(err){
+      sendJsonResponse(res, 400, err);
+    }else{
+      sendJsonResponse(res, 201, listing);
+    }
   });
 }
 
