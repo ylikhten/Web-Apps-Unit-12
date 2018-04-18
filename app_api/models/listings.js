@@ -7,4 +7,4 @@ var listingSchema = new mongoose.Schema({
   trades: {type:String, required: true}
 });
 
-mongoose.model('Listing', listingSchema);
+mongoose.model('Listing', listingSchema, 'listings');

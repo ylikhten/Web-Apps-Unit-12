@@ -44,3 +44,4 @@ mongoose.connection.on('disconnected', function() {
 });
 
 require('./listings');
+require('./users');
