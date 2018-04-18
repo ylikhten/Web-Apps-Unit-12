@@ -7,6 +7,8 @@ var ctrlAuth = require('../controllers/authentication');
 router.get('/listings', ctrlListings.allListings);
 router.get('/listings/:listingid', ctrlListings.singleListing);
 router.post('/listings/add', ctrlListings.addListing);
+router.delete('/listings/:listingid', ctrlListings.deleteListing);
+router.put('/listings/:listingid', ctrlListings.updateListing);
 
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);

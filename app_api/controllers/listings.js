@@ -38,6 +38,66 @@ module.exports.singleListing = function(req,res) {
   }
 };
 
+module.exports.updateListing = function(req,res) {
+  if (req.params && req.params.listingid) {
+    Listing
+      .findById(req.params.listingid)
+      .exec(function(err, listing) {
+        if (!listing) {
+          sendJsonResponse(res, 404, {
+            "message": "listingid not found"
+          });
+          return;
+        } else if (err) {
+          sendJsonResponse(res, 404, err);
+          return;
+        }
+        listing.title = req.body.title;
+        listing.subject = req.body.subject;
+        listing.description = req.body.description;
+        listing.trades = req.body.trades;
+        listing.save(function(err, listing){
+          if(err){
+            sendJsonResponse(res, 400, err);
+          }else{
+            sendJsonResponse(res, 200, {
+              "message": "updated"
+            });
+          }
+        });
+      });
+  } else {
+    sendJsonResponse(res, 404, {
+      "message": "No listingid in request"
+    });
+  }
+};
+
+//DELETE a single listing
+module.exports.deleteListing = function(req,res) {
+  if (req.params && req.params.listingid) {
+    Listing
+      .findById(req.params.listingid)
+      .remove(function(err, listing) {
+        if (!listing) {
+          sendJsonResponse(res, 404, {
+            "message": "listingid not found"
+          });
+          return;
+        } else if (err) {
+          sendJsonResponse(res, 404, err);
+          return;
+        }
+          sendJsonResponse(res, 204, null);
+      });
+  } else {
+    sendJsonResponse(res, 404, {
+      "message": "No listingid in request"
+    });
+  }
+};
+
+//PUT a new listing
 module.exports.addListing = function(req, res){
   var newListing = new Listing({
     title: req.body.title,
