@@ -1,6 +1,7 @@
 require('dotenv').load();
 
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -30,6 +31,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(passport.initialize());
+
+app.use(session({secret: process.env.JWT_SECRET}));
 
 app.use('/api', routesApi);
 app.use('/', index);

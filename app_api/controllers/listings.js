@@ -4,7 +4,7 @@ var User = mongoose.model('User');
 
 var getUser = function(req, res, callback) {
     if(req.payload && req.payload.email) {
-        User.findOne({email : req.payload.email}).exec(function(err, user {
+        User.findOne({email : req.payload.email}).exec(function(err, user) {
             if(!user) { 
                 sendJsonResponse(res, 404, {
                     "message": "User not found"

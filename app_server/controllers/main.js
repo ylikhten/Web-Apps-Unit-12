@@ -1,4 +1,5 @@
 var request = require('request');
+
 var apiOptions = {
     server: "http://localhost:3000"
 };
@@ -69,6 +70,82 @@ module.exports.about = function(req, res) {
     res.render('about', {title: 'About'});
 };
 
+/* Registration */
+
+/* GET registration page */
+module.exports.registrationForm = function (req, res) {
+    res.render('registrationForm')
+};
+
+/* POST register page */
+module.exports.postRegistrationForm = function (req, res) {
+    var requestOptions, path;
+    path = "/api/register";
+    postData = {
+        name : req.body.name,
+        email : req.body.email,
+        password : req.body.password
+    };
+
+    requestOptions = {
+        url : apiOptions.server + path,
+        mathod : "POST",
+        json : postData
+    };
+    console.log(postData); 
+    if (!req.body.name || !req.body.email || !req.body.password) {
+        res.redirect('/register/?err=val');
+    } else {
+        request (requestOptions, function (err, response, body) {
+            console.log("post");
+            if (response.statusCode === 201) {
+                res.redirect('/');
+            } else if (response.statusCode === 400 && body.name && body.email === "ValidationError") {
+                res.redirect('/register/?err=val');
+            } else {
+                _showError(req, res, response.statusCode);
+            }
+        });
+     }
+ };
+
+/* Login */
+
+/* GET login page */
+module.exports.loginForm = function (req, res) {
+    res.render('loginForm');
+};
+
+/* POST login page */
+module.exports.postLoginForm = function (req, res) {
+    var requestOptions, path;
+    path = "/api/login";
+    postData = {
+        email : req.body.email,
+        password : req.body.password
+    };
+
+    requestOptions = {
+        url : apiOptions.server + path,
+        mathod : "POST",
+        json : postData
+    };
+    console.log(postData); 
+    if (!req.body.email || !req.body.password) {
+        res.redirect('/login/?err=val');
+    } else {
+        request (requestOptions, function (err, response, body) {
+            console.log("post");
+            if (response.statusCode === 201) {
+                res.redirect('/');
+            } else if (response.statusCode === 400 && body.password && body.email === "ValidationError") {
+                res.redirect('/login/?err=val');
+            } else {
+                _showError(req, res, response.statusCode);
+            }
+        });
+     }
+ };
 /*GET Single Listing */
 var getListingInfo = function (req, res, callback) {
     var requestOptions, path;
