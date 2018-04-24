@@ -1,5 +1,29 @@
 var mongoose = require('mongoose');
 var Listing = mongoose.model('Listing');
+var User = mongoose.model('User');
+
+var getUser = function(req, res, callback) {
+    if(req.payload && req.payload.email) {
+        User.findOne({email : req.payload.email}).exec(function(err, user {
+            if(!user) { 
+                sendJsonResponse(res, 404, {
+                    "message": "User not found"
+                }); 
+                return;
+            } else if (err) {
+                console.log(err);
+                sendJsonResponse(res, 404, err);
+                return;
+            }
+            callback(req, res, user.name);
+        });
+    } else {
+        sendJsonResponse(res, 404, {
+            "message": "User not found"
+        });
+        return;
+    }
+};
 
 //Get ALL Listings
 module.exports.allListings = function(req,res) {
@@ -99,19 +123,22 @@ module.exports.deleteListing = function(req,res) {
 
 //PUT a new listing
 module.exports.addListing = function(req, res){
-  var newListing = new Listing({
-    title: req.body.title,
-    subject: req.body.subject,
-    description: req.body.description,
-    trades: req.body.trades
-  });
-  newListing.save(function(err, listing){
-    if(err){
-      sendJsonResponse(res, 400, err);
-    }else{
-      sendJsonResponse(res, 201, listing);
-    }
-  });
+    getUser(req, res, function (req, res, userName){
+      var newListing = new Listing({
+        name: userName,
+        title: req.body.title,
+        subject: req.body.subject,
+        description: req.body.description,
+        trades: req.body.trades
+      });
+      newListing.save(function(err, listing){
+        if(err){
+          sendJsonResponse(res, 400, err);
+        }else{
+          sendJsonResponse(res, 201, listing);
+        }
+      });
+   });
 }
 
 var sendJsonResponse = function(res, status, content){
