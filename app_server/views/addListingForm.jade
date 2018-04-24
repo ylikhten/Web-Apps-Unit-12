@@ -6,7 +6,9 @@ block content
       h1 Post New Barter Item
   .row
     .col-xs-12.col-md-6
-      form.form-horizontal(action="/allListings", method="get", role="form")
+      form.form-horizontal(action="", method="post", role="form")
+        - if (error == "val")
+          .alert.alert-danger(role="alert") All fields required, please try again
         .form-group
           label.col-xs-10.col-sm-2.control-label(for="title") Book Title:
           .col-xs-12.col-sm-10
@@ -28,7 +30,6 @@ block content
           label.col-xs-10.col-sm-2.control-label(for="trades") Items you are willing to trade for:
           .col-xs-12.col-sm-10
             input#name.form-control(name="trades")
-
-  .row.submit
-        a.btn.btn-default.pull-right(href='/') Post Item
-    .col-xs-12.col-md-4
+        .row.submit
+            button.btn.btn-default.pull-right Post Item
+          .col-xs-12.col-md-4

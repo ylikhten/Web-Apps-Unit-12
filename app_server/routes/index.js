@@ -6,6 +6,7 @@ var ctrlMain = require('../controllers/main');
 router.get('/', ctrlMain.index);
 router.get('/about', ctrlMain.about);
 router.get('/listings/add', ctrlMain.newListingForm);
-router.get('/listings/item', ctrlMain.singleListing);
+router.post('/listings/add', ctrlMain.postListingForm);
+router.get('/listings/item/:listingid', ctrlMain.singleListing);
 
 module.exports = router;

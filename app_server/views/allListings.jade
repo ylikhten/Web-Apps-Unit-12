@@ -1,5 +1,20 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+    #banner.page-header
+        .container
+            .row
+                .col-sm-4
+                    h3 Login
+                .col-sm-8
+                    h3 Listings
+    br
+    .row.list-group
+        each listing in listings
+            .col-xs-12.list-group-item
+                a.btn.btn-info.float-right(href='#dummy-button') Make an Offer
+                h4=listing.title
+                p Subject: #{listing.subject}
+                p Description: #{listing.description}
+                p Trades: #{listing.trades}
+                a.float-right(href='/listings/item/#{listing._id}') Details
