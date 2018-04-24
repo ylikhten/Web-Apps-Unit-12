@@ -8,5 +8,6 @@ router.get('/about', ctrlMain.about);
 router.get('/listings/add', ctrlMain.newListingForm);
 router.post('/listings/add', ctrlMain.postListingForm);
 router.get('/listings/item/:listingid', ctrlMain.singleListing);
+router.get('/listings/item/:listingid/delete', ctrlMain.deleteListing);
 
 module.exports = router;

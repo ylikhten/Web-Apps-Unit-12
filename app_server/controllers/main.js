@@ -4,6 +4,7 @@ var apiOptions = {
 };
 if (process.env.NODE_ENV === 'production') {
     apiOptions.server = "http://localhost:3000" // What is our heroku url??
+    //apiOptions.server = "https://fierce-tundra-31161.herokuapp.com/"
 }
 
 var _showError = function (req, res, status) {
@@ -19,7 +20,7 @@ var _showError = function (req, res, status) {
         content = "Check error code.";
     }
     res.status(status);
-    res.render('generic-text', {
+    res.render('genericText', {
         title : title,
         content : content
     });
@@ -94,7 +95,8 @@ var renderListingPage = function (req, res, listing) {
         title: listing.title,
         subject: listing.subject,
         description: listing.description,
-        trades: listing.trades
+        trades: listing.trades,
+        id: listing._id
     });
 };
 module.exports.singleListing = function(req, res) {
@@ -144,3 +146,24 @@ module.exports.postListingForm = function(req, res){
         );
     }
 };
+
+/* DELETE a listing */
+module.exports.deleteListing = function(req, res) {
+    var requestOptions, path;
+    path = "/api/listings/" + req.params.listingid + "/delete";
+    requestOptions = {
+        url : apiOptions.server + path,
+        method : "DELETE",
+        json : {}
+    };
+    request(
+        requestOptions,
+        function(err, response, body) {
+            if (response.statusCode === 204) {
+                res.redirect('/');
+            } else {
+                _showError(req, res, response.statusCode);
+            }
+        }
+    );
+}

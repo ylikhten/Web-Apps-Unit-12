@@ -7,6 +7,7 @@ block content
       p Book Subject: #{subject}
       p Book Description: #{description}
       p Items poster is willing to trade for: #{trades}
+      a.btn.btn-primary.float-right(href='/listings/item/#{id}/delete') Delete
   .row
     .col-xs-12.col-md-6
       form.form-horizontal(action="/allListings", method="get", role="form")
