@@ -14,7 +14,7 @@ router.get('/listings/:listingid', ctrlListings.singleListing);
 router.post('/listings/add', auth, ctrlListings.addListing);
 router.delete('/listings/:listingid/delete', auth, ctrlListings.deleteListing);
 router.put('/listings/:listingid', auth, ctrlListings.updateListing);
-router.get('/listings/user/:userid', auth, ctrlListings.getUserListings);
+router.get('/listings/user', auth, ctrlListings.getUserListings);
 
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);

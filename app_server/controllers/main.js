@@ -8,10 +8,13 @@ if (process.env.NODE_ENV === 'production') {
     //apiOptions.server = "https://fierce-tundra-31161.herokuapp.com/"
 }
 
-/*var isLoggedIn = function(req){
-  console.log(req.cookies);
-  return true;
-}*/
+var isLoggedIn = function(req){
+  if(req.cookies.access_token){
+      console.log("Logged IN");
+      return true;
+  }
+  return false;
+}
 
 var _showError = function (req, res, status) {
     var title, content;
@@ -32,7 +35,7 @@ var _showError = function (req, res, status) {
     res.render('genericText', {
         title : title,
         content : content,
-        //user: isLoggedIn(req)
+        user: isLoggedIn(req)
     });
 };
 
@@ -51,7 +54,7 @@ var renderHomepage = function (req, res, responseBody) {
         title: 'BookBarterCSM',
         listings: responseBody,
         message: message,
-        //user: isLoggedIn(req)
+        user: isLoggedIn(req)
     });
 }
 
@@ -104,7 +107,7 @@ module.exports.logout = function(req, res){
 
 /*GET about page */
 module.exports.about = function(req, res) {
-    res.render('about', {title: 'About', user: user});
+    res.render('about', {title: 'About', user: isLoggedIn(req)});
 };
 
 /* Registration */
@@ -219,7 +222,7 @@ var renderListingPage = function (req, res, listing) {
         trades: listing.trades,
         id: listing._id,
         userid: listing.userid,
-        //user: isLoggedIn(req)
+        user: isLoggedIn(req)
     });
 };
 module.exports.singleListing = function(req, res) {
@@ -235,7 +238,7 @@ module.exports.newListingForm = function(req, res) {
                                   b_text: 'Post Item',
                                   err: req.query.err,
                                   options: options,
-                                  //user: user,
+                                  user: isLoggedIn(req),
                                   listing: {
                                     title: "",
                                     subject: "",
@@ -262,7 +265,7 @@ module.exports.updateListingForm = function(req, res) {
                                   b_text: 'Update Item',
                                   err: req.query.err,
                                   options: options,
-                                  //user: user,
+                                  user: isLoggedIn(req),
                                   listing: listing});
   });
 };
