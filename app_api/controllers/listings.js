@@ -124,22 +124,21 @@ module.exports.deleteListing = function(req,res) {
 //PUT a new listing
 module.exports.addListing = function(req, res){
     getUser(req, res, function (req, res, userName){
-      var newListing = new Listing({
-        name: userName,
-        title: req.body.title,
-        subject: req.body.subject,
-        description: req.body.description,
-        trades: req.body.trades
-      });
-      newListing.save(function(err, listing){
-        if(err){
-          sendJsonResponse(res, 400, err);
-        }else{
-          sendJsonResponse(res, 201, listing);
-        }
-      });
+    var newListing = new Listing({
+    title: req.body.title,
+    subject: req.body.subject,
+    description: req.body.description,
+    trades: req.body.trades
+    });
+                newListing.save(function(err, listing){
+                    if(err){
+                      sendJsonResponse(res, 400, err);
+                    }else{
+                      sendJsonResponse(res, 201, listing);
+                    }
+                });
    });
-}
+};
 
 var sendJsonResponse = function(res, status, content){
   res.status(status);

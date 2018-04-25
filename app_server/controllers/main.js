@@ -89,7 +89,7 @@ module.exports.postRegistrationForm = function (req, res) {
 
     requestOptions = {
         url : apiOptions.server + path,
-        mathod : "POST",
+        method : "POST",
         json : postData
     };
     console.log(postData); 
@@ -98,7 +98,7 @@ module.exports.postRegistrationForm = function (req, res) {
     } else {
         request (requestOptions, function (err, response, body) {
             console.log("post");
-            if (response.statusCode === 201) {
+            if (response.statusCode === 200) {
                 res.redirect('/');
             } else if (response.statusCode === 400 && body.name && body.email === "ValidationError") {
                 res.redirect('/register/?err=val');
@@ -127,16 +127,14 @@ module.exports.postLoginForm = function (req, res) {
 
     requestOptions = {
         url : apiOptions.server + path,
-        mathod : "POST",
+        method : "POST",
         json : postData
     };
-    console.log(postData); 
     if (!req.body.email || !req.body.password) {
         res.redirect('/login/?err=val');
     } else {
         request (requestOptions, function (err, response, body) {
-            console.log("post");
-            if (response.statusCode === 201) {
+            if (response.statusCode === 200) {
                 res.redirect('/');
             } else if (response.statusCode === 400 && body.password && body.email === "ValidationError") {
                 res.redirect('/login/?err=val');
@@ -146,6 +144,8 @@ module.exports.postLoginForm = function (req, res) {
         });
      }
  };
+
+
 /*GET Single Listing */
 var getListingInfo = function (req, res, callback) {
     var requestOptions, path;
@@ -190,11 +190,13 @@ module.exports.newListingForm = function(req, res) {
 module.exports.postListingForm = function(req, res){
     var requestOptions, path, postdata;
     path = "/api/listings/add";
+    console.log(req.headers['x-access-token']);
     postdata = {
         title: req.body.title,
         subject: req.body.subject,
         description: req.body.description,
-        trades: req.body.trades
+        trades: req.body.trades,
+//        token: req.payload.token
     };
     requestOptions = {
         url : apiOptions.server + path,
