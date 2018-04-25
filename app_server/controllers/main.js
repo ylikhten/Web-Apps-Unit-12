@@ -74,7 +74,7 @@ module.exports.about = function(req, res) {
 
 /* GET registration page */
 module.exports.registrationForm = function (req, res) {
-    res.render('registrationForm')
+    res.render('registrationForm', {error: req.query.err})
 };
 
 /* POST register page */
@@ -97,11 +97,13 @@ module.exports.postRegistrationForm = function (req, res) {
         res.redirect('/register/?err=val');
     } else {
         request (requestOptions, function (err, response, body) {
-            console.log("post");
+            console.log(body);
             if (response.statusCode === 200) {
                 res.redirect('/');
             } else if (response.statusCode === 400 && body.name && body.email === "ValidationError") {
                 res.redirect('/register/?err=val');
+            } else if(response.statusCode === 401 && body.code === 11000){
+                res.redirect('/register/?err=dup');
             } else {
                 _showError(req, res, response.statusCode);
             }
@@ -113,7 +115,7 @@ module.exports.postRegistrationForm = function (req, res) {
 
 /* GET login page */
 module.exports.loginForm = function (req, res) {
-    res.render('loginForm');
+    res.render('loginForm', {error: req.query.err});
 };
 
 /* POST login page */
@@ -134,10 +136,13 @@ module.exports.postLoginForm = function (req, res) {
         res.redirect('/login/?err=val');
     } else {
         request (requestOptions, function (err, response, body) {
+            console.log(body);
             if (response.statusCode === 200) {
                 res.redirect('/');
             } else if (response.statusCode === 400 && body.password && body.email === "ValidationError") {
                 res.redirect('/login/?err=val');
+            } else if(response.statusCode === 401 && body.message === 'Incorrect password.'){
+                res.redirect('/login/?err=pas');
             } else {
                 _showError(req, res, response.statusCode);
             }
