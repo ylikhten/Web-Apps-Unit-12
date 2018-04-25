@@ -11,7 +11,7 @@ var ctrlAuth = require('../controllers/authentication');
 //Listings
 router.get('/listings', ctrlListings.allListings);
 router.get('/listings/:listingid', ctrlListings.singleListing);
-router.post('/listings/add', auth, ctrlListings.addListing);
+router.post('/listings/add', ctrlListings.addListing);
 router.delete('/listings/:listingid/delete', auth, ctrlListings.deleteListing);
 router.put('/listings/:listingid', auth, ctrlListings.updateListing);
 

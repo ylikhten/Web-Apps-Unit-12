@@ -225,7 +225,6 @@ module.exports.updateListingForm = function(req, res) {
 module.exports.postListingForm = function(req, res){
     var requestOptions, path, postdata;
     path = "/api/listings/add";
-    console.log(req.headers['x-access-token']);
     postdata = {
         title: req.body.title,
         subject: req.body.subject,

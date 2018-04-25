@@ -2,7 +2,16 @@ var mongoose = require('mongoose');
 var Listing = mongoose.model('Listing');
 var User = mongoose.model('User');
 
+var getToken = function (req) {
+    var token = req.cookies.access_token || req.body.access_token || req.query.access_token || req.headers['x-access-token'] ;
+    if (token) {
+        return token;
+    } 
+    return null;
+};
+
 var getUser = function(req, res, callback) {
+    console.log("payload email:" + req.payload.email);
     if(req.payload && req.payload.email) {
         User.findOne({email : req.payload.email}).exec(function(err, user) {
             if(!user) {
@@ -123,21 +132,22 @@ module.exports.deleteListing = function(req,res) {
 
 //PUT a new listing
 module.exports.addListing = function(req, res){
-    getUser(req, res, function (req, res, userName){
-    var newListing = new Listing({
-    title: req.body.title,
-    subject: req.body.subject,
-    description: req.body.description,
-    trades: req.body.trades
-    });
-                newListing.save(function(err, listing){
-                    if(err){
-                      sendJsonResponse(res, 400, err);
-                    }else{
-                      sendJsonResponse(res, 201, listing);
-                    }
-                });
-   });
+//    getUser(req, res, function (req, res, userName){
+        console.log("get token: " + getToken(req));
+        var newListing = new Listing({
+            title: req.body.title,
+            subject: req.body.subject,
+            description: req.body.description,
+            trades: req.body.trades
+        });
+        newListing.save(function(err, listing){
+            if(err){
+              sendJsonResponse(res, 400, err);
+            }else{
+              sendJsonResponse(res, 201, listing);
+            }
+        });
+//   });
 };
 
 var sendJsonResponse = function(res, status, content){
