@@ -11,11 +11,10 @@ var getToken = function (req) {
 };
 
 var getUser = function(req, res, callback) {
-    console.log("payload email:" + req.payload.email);
-    if(req.payload && req.payload.email) {
-        User.findOne({email : req.payload.email}).exec(function(err, user) {
+    if(req.payload && req.payload._id) {
+        User.findOne({_id : req.payload._id}).exec(function(err, user) {
             if(!user) {
-                sendJsonResponse(res, 404, {
+                sendJsonResponse(res, 401, {
                     "message": "User not found"
                 });
                 return;
@@ -24,15 +23,29 @@ var getUser = function(req, res, callback) {
                 sendJsonResponse(res, 404, err);
                 return;
             }
-            callback(req, res, user.name);
+            callback(req, res, user._id);
         });
     } else {
-        sendJsonResponse(res, 404, {
+        sendJsonResponse(res, 401, {
             "message": "User not found"
         });
         return;
     }
 };
+
+module.exports.getUserListings = function(req, res){
+  getUser(req, res, function(req, res, userid){
+    Listing
+      .find({userid: userid})
+      .exec(function(err, listing){
+          if (err) {
+            sendJsonResponse(res, 404, err);
+            return;
+          }
+          sendJsonResponse(res, 200, listing);
+      });
+  })
+}
 
 //Get ALL Listings
 module.exports.allListings = function(req,res) {
@@ -72,9 +85,10 @@ module.exports.singleListing = function(req,res) {
 };
 
 module.exports.updateListing = function(req,res) {
-  if (req.params && req.params.listingid) {
-    Listing
-      .findById(req.params.listingid)
+  getUser(req, res, function (req, res, userid){
+    if (req.params && req.params.listingid) {
+      Listing
+      .findOne({_id: req.params.listingid, userid: userid})
       .exec(function(err, listing) {
         if (!listing) {
           sendJsonResponse(res, 404, {
@@ -85,6 +99,7 @@ module.exports.updateListing = function(req,res) {
           sendJsonResponse(res, 404, err);
           return;
         }
+        console.log(listing);
         listing.title = req.body.title;
         listing.subject = req.body.subject;
         listing.description = req.body.description;
@@ -104,50 +119,53 @@ module.exports.updateListing = function(req,res) {
       "message": "No listingid in request"
     });
   }
+  });
 };
 
 //DELETE a single listing
 module.exports.deleteListing = function(req,res) {
-  if (req.params && req.params.listingid) {
-    Listing
-      .findById(req.params.listingid)
-      .remove(function(err, listing) {
-        if (!listing) {
-          sendJsonResponse(res, 404, {
-            "message": "listingid not found"
-          });
-          return;
-        } else if (err) {
-          sendJsonResponse(res, 404, err);
-          return;
-        }
+  getUser(req, res, function (req, res, userid){
+    if (req.params && req.params.listingid) {
+      Listing
+        .findOne({_id: req.params.listingid, userid: userid})
+        .remove(function(err, listing) {
+          if (!listing) {
+            sendJsonResponse(res, 404, {
+              "message": "listingid not found"
+            });
+            return;
+          } else if (err) {
+            sendJsonResponse(res, 404, err);
+            return;
+          }
           sendJsonResponse(res, 204, null);
+        });
+      } else {
+        sendJsonResponse(res, 404, {
+          "message": "No listingid in request"
       });
-  } else {
-    sendJsonResponse(res, 404, {
-      "message": "No listingid in request"
-    });
-  }
+    }
+  });
 };
 
 //PUT a new listing
 module.exports.addListing = function(req, res){
-//    getUser(req, res, function (req, res, userName){
-        console.log("get token: " + getToken(req));
-        var newListing = new Listing({
-            title: req.body.title,
-            subject: req.body.subject,
-            description: req.body.description,
-            trades: req.body.trades
-        });
-        newListing.save(function(err, listing){
-            if(err){
-              sendJsonResponse(res, 400, err);
-            }else{
-              sendJsonResponse(res, 201, listing);
-            }
-        });
-//   });
+    getUser(req, res, function (req, res, userid){
+      var newListing = new Listing({
+        title: req.body.title,
+        subject: req.body.subject,
+        description: req.body.description,
+        trades: req.body.trades,
+        userid: userid
+      });
+                newListing.save(function(err, listing){
+                    if(err){
+                      sendJsonResponse(res, 400, err);
+                    }else{
+                      sendJsonResponse(res, 201, listing);
+                    }
+                });
+   });
 };
 
 var sendJsonResponse = function(res, status, content){

@@ -13,10 +13,14 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-item(href='/listings/add') Post Item
+              
+            a.navbar-item(href='/listings/add') Post Item
+            //a.navbar-item(href='/listings/user/#{user.id}') My Listings
+            a.navbar-item(href='/logout') Logout
+
+            a.navbar-item(href='/register') Register
+            a.navbar-item(href='/login') Login
           a.navbar-item(href='/about') About
-          a.navbar-item(href='/register') Register
-          a.navbar-item(href='/login') Login
         #navbar-main.navbar-collapse.collapse
     .container
       block content
