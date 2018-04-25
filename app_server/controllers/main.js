@@ -92,7 +92,7 @@ module.exports.postRegistrationForm = function (req, res) {
         method : "POST",
         json : postData
     };
-    console.log(postData); 
+    console.log(postData);
     if (!req.body.name || !req.body.email || !req.body.password) {
         res.redirect('/register/?err=val');
     } else {
@@ -228,7 +228,6 @@ module.exports.postListingForm = function(req, res){
         trades: req.body.trades,
 //        token: req.payload.token
     };
-    console.log(postdata);
     requestOptions = {
         url : apiOptions.server + path,
         method : "POST",
@@ -271,7 +270,7 @@ module.exports.postUpdateListingForm = function(req, res){
       method : "PUT",
       json : postdata
   };
-  if (!postdata.title || !postdata.subject || !postdata.subject || !postdata.description) {
+  if (!postdata.title || !postdata.subject || !postdata.trades || !postdata.description) {
       res.redirect('/listings/add?err=val');
 
   // TODO ensure poster is logged in, also who is posting??
@@ -281,7 +280,7 @@ module.exports.postUpdateListingForm = function(req, res){
       request(
           requestOptions,
           function(err, response, body) {
-              if (response.statusCode === 201 || response.statusCode === 200) {
+              if (response.statusCode === 200) {
                   res.redirect('/'); // Or the user's listings.......
               } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
                   res.redirect('/listings/add?err=val');
