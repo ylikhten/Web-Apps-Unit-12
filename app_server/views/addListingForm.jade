@@ -3,58 +3,31 @@ extends layout
 block content
   .row.page-header
     .col-lg-12
-      h1 Post New Barter Item
+      h1 #{head}
   .row
     .col-xs-12.col-md-6
       form.form-horizontal(action="", method="post", role="form")
-        - if (error == "val")
+        - if (err == "val")
           .alert.alert-danger(role="alert") All fields required, please try again
         .form-group
           label.col-xs-10.col-sm-2.control-label(for="title") Book Title:
           .col-xs-12.col-sm-10
-            input#name.form-control(name="title")
+            input#name.form-control(name="title" value="#{listing.title}")
         .form-group
           label.col-xs-10.col-sm-2.control-label(for="subject") Book Subject:
           .col-xs-12.col-sm-2
-            select#rating.form-control.input-sm(name="subject")
-              option AFGN
-              option CBEN
-              option CEEN
-              option CHGC
-              option CHGN
-              option CSCI
-              option CSM
-              option EBGN
-              option EENG
-              option EGGN
-              option ENGY
-              option EPIC
-              option GEGN
-              option GEOL
-              option GPGN
-              option HNRS
-              option LAIS
-              option LIFL
-              option LIMU
-              option MATH
-              option MEGN
-              option MLGN
-              option MNGN
-              option MSGN
-              option MTGN
-              option NUGN
-              option PEGN
-              option PHGN
-              option SYGN
-              option Other/Unknown
+            select#subject.form-control.input-sm(name="subject" value="#{listing.subject}")
+              option(hidden value="") Select
+              each item in options
+                option(selected=(listing.subject==item)) #{item}
         .form-group
           label.col-xs-10.col-sm-2.control-label(for="description") Book Description:
           .col-xs-12.col-sm-10
-            input#name.form-control(name="description")
+            textarea#name.form-control(name="description") #{listing.description}
         .form-group
           label.col-xs-10.col-sm-2.control-label(for="trades") Items you are willing to trade for:
           .col-xs-12.col-sm-10
-            input#name.form-control(name="trades")
+            textarea#name.form-control(name="trades") #{listing.trades}
         .row.submit
-            button.btn.btn-default.pull-right Post Item
+            button.btn.btn-default.pull-right #{b_text}
           .col-xs-12.col-md-4

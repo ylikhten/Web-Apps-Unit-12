@@ -107,8 +107,38 @@ module.exports.singleListing = function(req, res) {
 
 /*GET Add Listing Form */
 module.exports.newListingForm = function(req, res) {
-    res.render('addListingForm', {title: 'New Listing'});
+    res.render('addListingForm', {title: 'New Listing',
+                                  head: 'Post New Barter Item',
+                                  b_text: 'Post Item',
+                                  err: req.query.err,
+                                  options: options,
+                                  listing: {
+                                    title: "",
+                                    subject: "",
+                                    description: "",
+                                    trades: ""}});
 };
+
+/*GET Update Listing Form*/
+module.exports.updateListingForm = function(req, res) {
+  var path = '/api/listings/' + req.params.listingid;
+  var requestOptions = {
+    url : apiOptions.server + path,
+    method: "GET",
+    json: {}
+  };
+  request(requestOptions, function(err, response, body){
+    var listing = body;
+    console.log(listing);
+    res.render('addListingForm', {title: 'Update Listing',
+                                  head: 'Update Barter Item',
+                                  b_text: 'Update Item',
+                                  err: req.query.err,
+                                  options: options,
+                                  listing: listing});
+  });
+};
+
 /*POST New Listing from Form */
 module.exports.postListingForm = function(req, res){
     var requestOptions, path, postdata;
@@ -119,12 +149,13 @@ module.exports.postListingForm = function(req, res){
         description: req.body.description,
         trades: req.body.trades
     };
+    console.log(postdata);
     requestOptions = {
         url : apiOptions.server + path,
         method : "POST",
         json : postdata
     };
-    if (!postdata.title || !postdata.subject || !postdata.subject || !postdata.description) {
+    if (!postdata.title || !postdata.subject|| !postdata.trades || !postdata.description) {
         res.redirect('/listings/add?err=val');
 
     // TODO ensure poster is logged in, also who is posting??
@@ -147,6 +178,43 @@ module.exports.postListingForm = function(req, res){
     }
 };
 
+module.exports.postUpdateListingForm = function(req, res){
+  var requestOptions, path, postdata;
+  path = "/api/listings/" + req.params.listingid;
+  postdata = {
+      title: req.body.title,
+      subject: req.body.subject,
+      description: req.body.description,
+      trades: req.body.trades
+  };
+  requestOptions = {
+      url : apiOptions.server + path,
+      method : "PUT",
+      json : postdata
+  };
+  if (!postdata.title || !postdata.subject || !postdata.subject || !postdata.description) {
+      res.redirect('/listings/add?err=val');
+
+  // TODO ensure poster is logged in, also who is posting??
+  } else if (false) {
+      res.redirect('/listings/add?err=val');
+  } else {
+      request(
+          requestOptions,
+          function(err, response, body) {
+              if (response.statusCode === 201 || response.statusCode === 200) {
+                  res.redirect('/'); // Or the user's listings.......
+              } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
+                  res.redirect('/listings/add?err=val');
+              } else {
+                  console.log(body);
+                  _showError(req, res, response.statusCode);
+              }
+          }
+      );
+  }
+};
+
 /* DELETE a listing */
 module.exports.deleteListing = function(req, res) {
     var requestOptions, path;
@@ -167,3 +235,34 @@ module.exports.deleteListing = function(req, res) {
         }
     );
 }
+
+var options = [
+  'AFGN',
+  'CBEN',
+  'CEEN',
+  'CHGC',
+  'CHGN',
+  'CSCI',
+  'CSM',
+  'EBGN',
+  'EENG',
+  'EGGN',
+  'ENGY',
+  'EPIC',
+  'GEGN',
+  'GEOL',
+  'GPGN',
+  'HNRS',
+  'LAIS',
+  'LIFL',
+  'LIMU',
+  'MATH',
+  'MEGN',
+  'MLGN',
+  'MNGN',
+  'MSGN',
+  'MTGN',
+  'NUGN',
+  'PEGN',
+  'PHGN',
+  'SYGN', 'Other/Unknown'];

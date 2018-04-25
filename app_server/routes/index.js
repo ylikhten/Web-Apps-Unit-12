@@ -7,6 +7,8 @@ router.get('/', ctrlMain.index);
 router.get('/about', ctrlMain.about);
 router.get('/listings/add', ctrlMain.newListingForm);
 router.post('/listings/add', ctrlMain.postListingForm);
+router.get('/listings/:listingid/update', ctrlMain.updateListingForm);
+router.post('/listings/:listingid/update', ctrlMain.postUpdateListingForm);
 router.get('/listings/item/:listingid', ctrlMain.singleListing);
 router.get('/listings/item/:listingid/delete', ctrlMain.deleteListing);
 
