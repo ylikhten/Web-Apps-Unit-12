@@ -12,7 +12,7 @@ router.post('/listings/:listingid/update', ctrlMain.postUpdateListingForm);
 router.get('/listings/item/:listingid', ctrlMain.singleListing);
 router.get('/listings/item/:listingid/delete', ctrlMain.deleteListing);
 
-router.get('/listings/user/:userid', ctrlMain.userListings);
+router.get('/listings/user', ctrlMain.userListings);
 
 router.get('/register', ctrlMain.registrationForm);
 router.post('/register', ctrlMain.postRegistrationForm);

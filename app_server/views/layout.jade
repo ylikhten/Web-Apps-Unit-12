@@ -13,11 +13,11 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-              
+          -if(user)
             a.navbar-item(href='/listings/add') Post Item
-            //a.navbar-item(href='/listings/user/#{user.id}') My Listings
+            a.navbar-item(href='/listings/user') My Listings
             a.navbar-item(href='/logout') Logout
-
+          -else
             a.navbar-item(href='/register') Register
             a.navbar-item(href='/login') Login
           a.navbar-item(href='/about') About
