@@ -12,4 +12,10 @@ router.post('/listings/:listingid/update', ctrlMain.postUpdateListingForm);
 router.get('/listings/item/:listingid', ctrlMain.singleListing);
 router.get('/listings/item/:listingid/delete', ctrlMain.deleteListing);
 
+router.get('/register', ctrlMain.registrationForm);
+router.post('/register', ctrlMain.postRegistrationForm);
+
+router.get('/login', ctrlMain.loginForm);
+router.post('/login', ctrlMain.postLoginForm);
+
 module.exports = router;

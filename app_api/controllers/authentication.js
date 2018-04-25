@@ -44,19 +44,22 @@ module.exports.login = function(req, res) {
         return;
     }
 
-    passport.authenticate('local', function(err, user, info) {
+    passport.authenticate('local', {session: false}, function(err, user, info) {
         var token;
 
         if(err) {
             sendJSONresponse(res, 404, err);
             return;
         }
-
+        console.log(user);
         if(user) {
             token = user.generateJwt();
+            console.log(token);
+            res.cookie('auth', token);
             sendJSONresponse(res, 200, {
                 "token" : token
             });
+
         } else {
             sendJSONresponse(res, 401, info);
         }
