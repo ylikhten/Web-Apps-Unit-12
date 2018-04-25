@@ -16,6 +16,9 @@ var _showError = function (req, res, status) {
     } else if (status === 500) {
         title = "500, internal server error";
         content = "Server error.";
+    } else if (status === 401) {
+        title = "401, unauthorized access";
+        content = "Make sure to login before editing your content."
     } else {
         title = status + ", something's gone wrong";
         content = "Check error code.";
