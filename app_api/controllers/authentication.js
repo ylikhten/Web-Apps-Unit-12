@@ -29,7 +29,9 @@ module.exports.register = function(req, res) {
         } else {
             token = user.generateJwt();
             sendJSONresponse(res, 200, {
-                "token" : token
+              "token" : token,
+              id : user.id,
+              name : user.name
             });
         }
     });
@@ -51,13 +53,12 @@ module.exports.login = function(req, res) {
             sendJSONresponse(res, 404, err);
             return;
         }
-        console.log(user);
         if(user) {
             token = user.generateJwt();
-            console.log(token);
-            res.cookie('auth', token);
             sendJSONresponse(res, 200, {
-                "token" : token
+                "token" : token,
+                id : user.id,
+                name : user.name
             });
 
         } else {

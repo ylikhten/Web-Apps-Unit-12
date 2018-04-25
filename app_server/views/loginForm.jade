@@ -9,6 +9,8 @@ block content
       form.form-horizontal(action="", method="post", role="form")
         - if (error == "val")
           .alert.alert-danger(role="alert") All fields required, please try again
+        - if (error == "user")
+          .alert.alert-danger(role="alert") Incorrect Email, please try again
         - if (error == "pas")
           .alert.alert-danger(role="alert") Incorrect Password, please try again
         .form-group
