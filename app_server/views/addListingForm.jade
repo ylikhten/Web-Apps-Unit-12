@@ -5,29 +5,29 @@ block content
     .col-lg-12
       h1 #{head}
   .row
-    .col-xs-12.col-md-6
+    .col-xs-12.col-sm-10
       form.form-horizontal(action="", method="post", role="form")
         - if (err == "val")
           .alert.alert-danger(role="alert") All fields required, please try again
         .form-group
-          label.col-xs-10.col-sm-2.control-label(for="title") Book Title:
+          label.col-xs-12.col-sm-10.control-label(for="title") Book Title:
           .col-xs-12.col-sm-10
             input#name.form-control(name="title" value="#{listing.title}")
         .form-group
-          label.col-xs-10.col-sm-2.control-label(for="subject") Book Subject:
-          .col-xs-12.col-sm-2
+          label.col-xs-12.col-sm-10.control-label(for="subject") Book Subject:
+          .col-xs-12.col-sm-10
             select#subject.form-control.input-sm(name="subject" value="#{listing.subject}")
               option(hidden value="") Select
               each item in options
                 option(selected=(listing.subject==item)) #{item}
         .form-group
-          label.col-xs-10.col-sm-2.control-label(for="description") Book Description:
+          label.col-xs-12.col-sm-10.control-label(for="description") Book Description:
           .col-xs-12.col-sm-10
             textarea#name.form-control(name="description") #{listing.description}
         .form-group
-          label.col-xs-10.col-sm-2.control-label(for="trades") Items you are willing to trade for:
+          label.col-xs-12.col-sm-10.control-label(for="trades") Items you are willing to trade for:
           .col-xs-12.col-sm-10
             textarea#name.form-control(name="trades") #{listing.trades}
         .row.submit
-            button.btn.btn-default.pull-right #{b_text}
+            button.btn.btn-default #{b_text}
           .col-xs-12.col-md-4
