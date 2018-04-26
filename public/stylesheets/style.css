@@ -2,7 +2,7 @@
 .navbar-brand {color: #FFFFFF;text-decoration:none; font-size:30px}
 small {color:#9f9f9f;}
 body {background-color:#e3e3e3;}
-.boot{color:#FFFFFF;}
+.boot{color:#FFFFFF; text-align: center;}
 .navbar-item {color: #FFFFFF;text-decoration:none; margin-left: 1.5em; margin-bottom:1em}
 
 .page-footer{
