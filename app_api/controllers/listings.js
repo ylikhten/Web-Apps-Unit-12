@@ -34,6 +34,7 @@ var getUser = function(req, res, callback) {
 };
 
 module.exports.getUserListings = function(req, res){
+  console.log("user Listings");
   getUser(req, res, function(req, res, userid){
     Listing
       .find({userid: userid})

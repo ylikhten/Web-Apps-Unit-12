@@ -4,24 +4,29 @@ block content
   .row.page-header
     .col-lg-12
       h1 Book Title: #{title}
+      br
       p Book Subject: #{subject}
       p Book Description: #{description}
       p Items poster is willing to trade for: #{trades}
+      br
+      -if(user && cookieid == userid)
         a.btn.btn-primary.float-right(href='/listings/#{id}/update') Update
         br
         a.btn.btn-primary.float-right(href='/listings/item/#{id}/delete') Delete
-  .row
-    .col-xs-12.col-md-6
-      form.form-horizontal(action="/allListings", method="get", role="form")
-        .form-group
-          label.col-xs-10.col-sm-2.control-label(for="email") Your Email:
-          .col-xs-12.col-sm-10
-            input#name.form-control(name="email")
-        .form-group
-          label.col-xs-10.col-sm-2.control-label(for="offer") Your Trade Offer:
-          .col-xs-12.col-sm-10
-            input#name.form-control(name="offer")
-
-      .row.submit
-            a.btn.btn-default.pull-right(href='/') Submit Offer
-        .col-xs-12.col-md-4
+      -else if(user)
+        .row
+          .col-xs-12.col-md-6
+            form.form-horizontal(action="/allListings", method="get", role="form")
+              .form-group
+                label.col-xs-12.col-sm-10.control-label(for="email") Your Email:
+                .col-xs-12.col-sm-10
+                  input#name.form-control(name="email")
+              .form-group
+                label.col-xs-12.col-sm-10.control-label(for="offer") Your Trade Offer:
+                .col-xs-12.col-sm-10
+                  input#name.form-control(name="offer")
+                  br
+              .row.submit
+                a.btn.btn-default.pull-right(href='/') Submit Offer
+      -else
+        sp You must be singed in to make an offer.

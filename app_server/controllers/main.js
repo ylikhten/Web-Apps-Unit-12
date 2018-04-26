@@ -59,8 +59,9 @@ var renderHomepage = function (req, res, responseBody) {
 }
 
 module.exports.userListings = function(req, res){
+  console.log("TETS")
   var requestOptions, path;
-  path = '/api/listings/user/' + req.params.userid;
+  path = '/api/userlistings';
   requestOptions = {
       url : apiOptions.server + path,
       method : "GET",
@@ -74,6 +75,7 @@ module.exports.userListings = function(req, res){
       function(err, response, body) {
           var data;
           data = body;
+          console.log(body);
           renderHomepage(req, res, data);
       }
   );
@@ -102,6 +104,7 @@ module.exports.index = function(req, res) {
 
 module.exports.logout = function(req, res){
   res.clearCookie('access_token');
+  res.clearCookie('userid');
   res.redirect('/');
 }
 
@@ -139,6 +142,7 @@ module.exports.postRegistrationForm = function (req, res) {
         request (requestOptions, function (err, response, body) {
             if (response.statusCode === 200) {
                 res.cookie('access_token', body.token);
+                res.cookie('userid', body.id);
                 res.redirect('/');
             } else if (response.statusCode === 400 && body.name && body.email === "ValidationError") {
                 res.redirect('/register/?err=val');
@@ -178,6 +182,7 @@ module.exports.postLoginForm = function (req, res) {
         request (requestOptions, function (err, response, body) {
             if (response.statusCode === 200) {
                 res.cookie('access_token', body.token);
+                res.cookie('userid', body.id);
                 res.redirect('/')
             } else if (response.statusCode === 400 && body.password && body.email === "ValidationError") {
                 res.redirect('/login/?err=val');
@@ -222,6 +227,7 @@ var renderListingPage = function (req, res, listing) {
         trades: listing.trades,
         id: listing._id,
         userid: listing.userid,
+        cookieid: req.cookies.userid,
         user: isLoggedIn(req)
     });
 };
