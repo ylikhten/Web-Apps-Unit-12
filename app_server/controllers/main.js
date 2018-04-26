@@ -4,8 +4,8 @@ var apiOptions = {
     server: "http://localhost:3000"
 };
 if (process.env.NODE_ENV === 'production') {
-    apiOptions.server = "http://localhost:3000" // What is our heroku url??
-    //apiOptions.server = "https://fierce-tundra-31161.herokuapp.com/"
+    //apiOptions.server = "http://localhost:3000" // What is our heroku url??
+    apiOptions.server = "https://fierce-tundra-31161.herokuapp.com/"
 }
 
 var isLoggedIn = function(req){
