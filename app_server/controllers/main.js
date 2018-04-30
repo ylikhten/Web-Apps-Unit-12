@@ -4,8 +4,8 @@ var apiOptions = {
     server: "http://localhost:3000"
 };
 if (process.env.NODE_ENV === 'production') {
-    //apiOptions.server = "http://localhost:3000" // What is our heroku url??
-    apiOptions.server = "https://fierce-tundra-31161.herokuapp.com"
+    apiOptions.server = "http://localhost:3000" // What is our heroku url??
+    //apiOptions.server = "https://fierce-tundra-31161.herokuapp.com"
 }
 
 var isLoggedIn = function(req){
@@ -228,6 +228,7 @@ var renderListingPage = function (req, res, listing) {
         id: listing._id,
         userid: listing.userid,
         cookieid: req.cookies.userid,
+        offers: listing.offers,
         user: isLoggedIn(req)
     });
 };
@@ -387,6 +388,32 @@ module.exports.deleteListing = function(req, res) {
             }
         }
     );
+}
+
+module.exports.postTrade = function(req, res){
+  var path = "/api/listings/" + req.params.listingid + "/trade";
+  requestOptions = {
+      url : apiOptions.server + path,
+      method : "POST",
+      headers: {
+        'Authorization': 'Bearer ' + req.cookies.access_token
+      },
+      json : {
+        offer: req.body.offer
+      }
+  };
+  request(
+      requestOptions,
+      function(err, response, body) {
+          if (response.statusCode === 200) {
+              console.log("trade");
+              res.redirect('/');
+          } else {
+              _showError(req, res, response.statusCode);
+          }
+      }
+  );
+
 }
 
 var options = [

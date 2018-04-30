@@ -12,6 +12,8 @@ router.post('/listings/:listingid/update', ctrlMain.postUpdateListingForm);
 router.get('/listings/item/:listingid', ctrlMain.singleListing);
 router.get('/listings/item/:listingid/delete', ctrlMain.deleteListing);
 
+router.post('/listings/item/:listingid', ctrlMain.postTrade);
+
 router.get('/listings/user', ctrlMain.userListings);
 
 router.get('/register', ctrlMain.registrationForm);

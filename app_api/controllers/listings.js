@@ -6,7 +6,7 @@ var getToken = function (req) {
     var token = req.cookies.access_token || req.body.access_token || req.query.access_token || req.headers['x-access-token'] ;
     if (token) {
         return token;
-    } 
+    }
     return null;
 };
 
@@ -23,7 +23,7 @@ var getUser = function(req, res, callback) {
                 sendJsonResponse(res, 404, err);
                 return;
             }
-            callback(req, res, user._id);
+            callback(req, res, user._id, user.email);
         });
     } else {
         sendJsonResponse(res, 401, {
@@ -168,6 +168,39 @@ module.exports.addListing = function(req, res){
                 });
    });
 };
+
+module.exports.postTrade = function(req, res){
+  console.log("TRADE")
+  getUser(req, res, function(req, res, userid, email){
+    Listing.findById(req.params.listingid)
+           .exec(function(err, listing){
+             if (!listing) {
+               sendJsonResponse(res, 404, {
+                 "message": "listingid not found"
+               });
+               return;
+             } else if (err) {
+               sendJsonResponse(res, 404, err);
+               return;
+             }
+             listing.offers.push({
+               offer: req.body.offer,
+               email: email
+             });
+             console.log(listing)
+             listing.save(function(err, listing){
+               if(err){
+                 console.log(err)
+                 sendJsonResponse(res, 400, err);
+               }else{
+                 sendJsonResponse(res, 200, {
+                   "message": "updated"
+                 });
+               }
+             });
+           })
+  });
+}
 
 var sendJsonResponse = function(res, status, content){
   res.status(status);

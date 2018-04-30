@@ -15,6 +15,7 @@ router.post('/listings/add', auth, ctrlListings.addListing);
 router.delete('/listings/:listingid/delete', auth, ctrlListings.deleteListing);
 router.put('/listings/:listingid', auth, ctrlListings.updateListing);
 router.get('/userlistings', auth, ctrlListings.getUserListings);
+router.post('/listings/:listingid/trade', auth, ctrlListings.postTrade);
 
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
