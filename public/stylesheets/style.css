@@ -1,16 +1,20 @@
 .navbar {background-color: #000099; padding:12px; margin-bottom: 3em;}
 .navbar-brand {color: #FFFFFF;text-decoration:none; font-size:30px}
+ {text-decoration: none}
 small {color:#9f9f9f;}
 body {background-color:#e3e3e3;}
 .boot{color:#FFFFFF; text-align: center;}
-.navbar-item {color: #FFFFFF;text-decoration:none; margin-left: 1.5em; margin-bottom:1em}
+.navbar-item, .navbar-item:hover {color: #FFFFFF;text-decoration:none; margin-left: 1.5em; margin-bottom:1em}
 
 .page-footer{
-  background-color: #000099;
   position: fixed;
   padding: 12px;
   margin-top: 3em;
   left: 0;
   bottom: 0;
   width: 100%;
+}
+
+.back{
+  background-color: #000099;
 }

@@ -23,6 +23,8 @@ block content
                   input#name.form-control(name="offer")
                   br
               .row.submit
-                a.btn.btn-default.pull-right(href='/listings/item/#{id}/delete') Submit Offer
+                .col-xs-12.col-sm-10
+                  button.btn.back
+                    a.nav-item.boot.btn(href='/') Submit Offer
       -else
-        sp You must be singed in to make an offer.
+        sp You must be signed in to make an offer.
