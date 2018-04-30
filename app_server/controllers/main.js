@@ -59,7 +59,6 @@ var renderHomepage = function (req, res, responseBody) {
 }
 
 module.exports.userListings = function(req, res){
-  console.log("TETS")
   var requestOptions, path;
   path = '/api/userlistings';
   requestOptions = {
@@ -83,7 +82,6 @@ module.exports.userListings = function(req, res){
 
 /* GET home page */
 module.exports.index = function(req, res) {
-    console.log(req.cookies.access_token);
     var requestOptions, path;
     path = '/api/listings';
     requestOptions = {
@@ -135,9 +133,11 @@ module.exports.postRegistrationForm = function (req, res) {
         method : "POST",
         json : postData
     };
-    console.log(postData);
     if (!req.body.name || !req.body.email || !req.body.password) {
         res.redirect('/register/?err=val');
+    }
+    if (!req.body.email.includes("@") && !req.body.email.includes(".")){
+        res.redirect('/register/?err=eVal');
     } else {
         request (requestOptions, function (err, response, body) {
             if (response.statusCode === 200) {
@@ -380,6 +380,7 @@ module.exports.deleteListing = function(req, res) {
         requestOptions,
         function(err, response, body) {
             if (response.statusCode === 204) {
+                console.log("deleted");
                 res.redirect('/');
             } else {
                 _showError(req, res, response.statusCode);

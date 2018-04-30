@@ -11,6 +11,8 @@ block content
           .alert.alert-danger(role="alert") All fields required, please try again
         - if (error == "dup")
           .alert.alert-danger(role="alert") An account already exists with this email, please try again
+        - if (error == "eVal")
+          .alert.alert-danger(role="alert") Please input a valid email
         .form-group
           label.col-xs-10.col-sm-2.control-label(for="name") Name:
           .col-xs-12.col-sm-10
